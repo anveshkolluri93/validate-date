@@ -1,6 +1,6 @@
 {
   "name": "validate-date",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "date validation",
   "main": "validate-date.js",
   "scripts": {
@@ -8,6 +8,14 @@
   },
   "author": "anveshkumar",
   "license": "MIT",
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/anveshkolluri93/validate-date.git"
+  },
+  "bugs": {
+      "url": "https://github.com/anveshkolluri93/validate-date/issues"
+  },
+  "homepage": "https://github.com/anveshkolluri93/validate-date#validate-date",
   "keywords": [
     "validate date",
     "date",

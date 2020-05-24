@@ -1,6 +1,6 @@
-# [Validate Date]
+# Validate Date
 
-##Install
+## Install
 
 ```bash
 npm install validate-date --save--dev 
