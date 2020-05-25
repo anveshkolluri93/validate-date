@@ -9,11 +9,11 @@
   "author": "anveshkumar",
   "license": "MIT",
   "repository": {
-      "type": "git",
-      "url": "git+https://github.com/anveshkolluri93/validate-date.git"
+    "type": "git",
+    "url": "git+https://github.com/anveshkolluri93/validate-date.git"
   },
   "bugs": {
-      "url": "https://github.com/anveshkolluri93/validate-date/issues"
+    "url": "https://github.com/anveshkolluri93/validate-date/issues"
   },
   "homepage": "https://github.com/anveshkolluri93/validate-date#validate-date",
   "keywords": [
@@ -26,5 +26,6 @@
     "invalid date",
     "invalid format",
     "invalid date format"
-  ]
+  ],
+  "dependencies": {}
 }
