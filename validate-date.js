@@ -1,11 +1,11 @@
-function validateDate(dateValue, booleanResponse = false, format = null) {
+function validateDate(dateValue, booleanResponse = false, dateFormat = null) {
   let responses = booleanResponse
     ? [false, false, true]
     : ["Invalid Format", "Invalid Date", "Valid Date"];
   if (dateValue == null) {
     return responses[0];
   }
-  return dateValidator(dateValue, responses, format);
+  return dateValidator(dateValue, responses, dateFormat);
 }
 
 function daysInMonth(year, month) {
@@ -22,17 +22,17 @@ function getAllIndexes(arr, val) {
     return indexes;
 }
 
-function dateValidator(dateValue, responses, format) {
+function dateValidator(dateValue, responses, dateFormat) {
   if (dateValue) {
-    if (!format) {
-      format = dateValue.includes("-") ? "yyyy-mm-dd" : "mm/dd/yyyy";
+    if (!dateFormat) {
+      dateFormat = dateValue.includes("-") ? "yyyy-mm-dd" : "mm/dd/yyyy";
     }
 
-    if (format.length > 10 || format.length < 6) return responses[0];
+    if (dateFormat.length > 10 || dateFormat.length < 6) return responses[0];
 
     const formatSplit = dateValue.includes("-")
-      ? format.split("-")
-      : format.split("/");
+      ? dateFormat.split("-")
+      : dateFormat.split("/");
 
     let wrongFormat = formatSplit.map((formatPart) =>
       /([dmy])\1/i.test(formatPart)
