@@ -1,5 +1,5 @@
-function validateDate(dateValue, boolean = false, format = null) {
-  let responses = boolean
+function validateDate(dateValue, booleanResponse = false, format = null) {
+  let responses = booleanResponse
     ? [false, false, true]
     : ["Invalid Format", "Invalid Date", "Valid Date"];
   if (dateValue == null) {
@@ -10,7 +10,7 @@ function validateDate(dateValue, boolean = false, format = null) {
 
 function daysInMonth(year, month) {
   const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  return month === 2 && year % 4 === 0 ? 29 : days[month - 1];
+  return (month === 2 && year % 4 === 0) ? 29 : days[month - 1];
 }
 
 
@@ -29,7 +29,7 @@ function dateValidator(dateValue, responses, format) {
     }
 
     if (format.length > 10 || format.length < 6) return responses[0];
-    console.log(format)
+
     const formatSplit = dateValue.includes("-")
       ? format.split("-")
       : format.split("/");
