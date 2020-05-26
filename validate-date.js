@@ -1,25 +1,33 @@
-function validateDate(dateValue, booleanResponse = false, dateFormat = null) {
-  let responses = booleanResponse
-    ? [false, false, true]
-    : ["Invalid Format", "Invalid Date", "Valid Date"];
+function validateDate(dateValue, responseType = "string", dateFormat = null) {
+  let responses = responseSetter(responseType)
   if (dateValue == null) {
     return responses[0];
   }
   return dateValidator(dateValue, responses, dateFormat);
 }
 
-function daysInMonth(year, month) {
-  const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  return (month === 2 && year % 4 === 0) ? 29 : days[month - 1];
+function responseSetter(responseType) {
+  switch (responseType) {
+    case "string":
+      return ["Invalid Format", "Invalid Date", "Valid Date"];
+    case "boolean":
+      return [false, false, true];
+    default:
+      return ["Invalid Format", "Invalid Date", "Valid Date"];
+
+  }
 }
 
+function daysInMonth(year, month) {
+  const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  return month === 2 && year % 4 === 0 ? 29 : days[month - 1];
+}
 
 function getAllIndexes(arr, val) {
-    var indexes = [], i;
-    for(i = 0; i < arr.length; i++)
-        if (arr[i] === val)
-            indexes.push(i);
-    return indexes;
+  var indexes = [],
+    i;
+  for (i = 0; i < arr.length; i++) if (arr[i] === val) indexes.push(i);
+  return indexes;
 }
 
 function dateValidator(dateValue, responses, dateFormat) {
@@ -34,11 +42,11 @@ function dateValidator(dateValue, responses, dateFormat) {
       ? dateFormat.split("-")
       : dateFormat.split("/");
 
-    let wrongFormat = formatSplit.map((formatPart) =>
-      /([dmy])\1/i.test(formatPart)
-    ).filter((rightFormat)=>!rightFormat)
+    let wrongFormat = formatSplit
+      .map((formatPart) => /([dmy])\1/i.test(formatPart))
+      .filter((rightFormat) => !rightFormat);
 
-    if(wrongFormat.length>0)return(responses[0])
+    if (wrongFormat.length > 0) return responses[0];
 
     let dateSeparator = dateValue.includes("-") ? "-" : "/";
 
@@ -46,19 +54,32 @@ function dateValidator(dateValue, responses, dateFormat) {
       `(\\d{${formatSplit[0].length}})(${dateSeparator})(\\d{${formatSplit[1].length}})(${dateSeparator})(\\d{${formatSplit[2].length}})`
     );
 
-    let dayPosition = getAllIndexes(formatSplit,formatSplit.filter((formatPart)=>/[d]/i.test(formatPart))[0])
-    let monthPosition = getAllIndexes(formatSplit,formatSplit.filter((formatPart)=>/[m]/i.test(formatPart))[0])
-    let yearPosition = getAllIndexes(formatSplit,formatSplit.filter((formatPart)=>/[y]/i.test(formatPart))[0])
+    let dayPosition = getAllIndexes(
+      formatSplit,
+      formatSplit.filter((formatPart) => /[d]/i.test(formatPart))[0]
+    );
+    let monthPosition = getAllIndexes(
+      formatSplit,
+      formatSplit.filter((formatPart) => /[m]/i.test(formatPart))[0]
+    );
+    let yearPosition = getAllIndexes(
+      formatSplit,
+      formatSplit.filter((formatPart) => /[y]/i.test(formatPart))[0]
+    );
 
-    if(dayPosition.length!==1 || monthPosition.length !== 1 || yearPosition.length !==1) return(responses[0])
-
+    if (
+      dayPosition.length !== 1 ||
+      monthPosition.length !== 1 ||
+      yearPosition.length !== 1
+    )
+      return responses[0];
 
     if (formatRegex.test(dateValue)) {
       const dateSplit = dateValue.split(dateSeparator);
-      const day = Number(dateSplit[dayPosition])
-      const month = Number(dateSplit[monthPosition])
-       const year = Number(dateSplit[yearPosition])
-             if (
+      const day = Number(dateSplit[dayPosition]);
+      const month = Number(dateSplit[monthPosition]);
+      const year = Number(dateSplit[yearPosition]);
+      if (
         month <= 0 ||
         month > 12 ||
         day > daysInMonth(year, month) ||

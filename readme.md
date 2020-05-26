@@ -2,7 +2,7 @@
 
 Give me a string and I'll tell you if it's a valid date.
 
-This package exports a single synchronous function that takes date as a “string” and two **optional** parameters, response type as a "booleanResponse"(booleanResponse=false by default) and date format as "dateFormat" (dateFormat=null by default, but see more details below) and returns a convenient response based on the user’s choice. It also validates leap years.
+This package exports a single synchronous function that takes date as a “string” and two **optional** parameters, the type of response as "responseType"(responseType="string" by default) and date format as "dateFormat" (dateFormat=null by default, but see more details below) and returns a convenient response based on the user’s choice. It also validates leap years.
 
 ## Install
 
@@ -12,7 +12,7 @@ npm install validate-date --save--dev
 
 ## Usage
 
-The function accepts three parameters: a **date string**, a **"booleanResponse"** parameter and a **"dateFormat"** string. By default "booleanResponse"=false and the function returns strings (see below). If "booleanResponse" is set to true, the function returns "true" for validated dates and "false" for incorrect ones. By default this function accepts dates on the formats "yyyy-mm-dd" and "mm/dd/yyyy", but other formats can be enforced by declaring it in the "dateFormat" parameter. The "dateFormat" parameter is case insensitive (e.g. YYYY/MM/DD is the same as yyyy/mm/dd). The only two separators accepted by now are "-" and "/". Only number can be used on the date (i.e. use 06 for June, not Jun or June).
+The function accepts three parameters: a **date string**, a **"responseType"** parameter and a **"dateFormat"** string. By default "responseType"="string" and the function returns strings with information about the date string (see below). If "responseType" is set to "boolean", the function returns "true" for validated dates and "false" for incorrect ones. By default this function accepts dates on the formats "yyyy-mm-dd" and "mm/dd/yyyy", but other formats can be enforced by declaring it in the "dateFormat" parameter. The "dateFormat" parameter is case insensitive (e.g. YYYY/MM/DD is the same as yyyy/mm/dd). The only two separators accepted by now are "-" and "/". Only number can be used on the date (i.e. use 06 for June, not Jun or June).
 
 ```js
 
