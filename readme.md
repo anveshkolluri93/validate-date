@@ -20,7 +20,6 @@ var validateDate = require("validate-date");
 
 
 
-Let's update these to the one below Please make sure to preserve the bold text :)
 
 validateDate('99/10/2020'); //returns Invalid Date
 validateDate('02/29/2001'); //returns Invalid Date. Leap year check verified
