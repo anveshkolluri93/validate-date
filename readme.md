@@ -2,7 +2,7 @@
 
 Give me a string and I'll tell you if it's a valid date.
 
-This package exports a single synchronous function that takes date as a “string” and two **optional** parameters, the type of response as "responseType"(responseType="string" by default) and date format as "dateFormat" (dateFormat=null by default, but see more details below) and returns a convenient response based on the user’s choice. It also validates leap years.
+This package exports a single synchronous function that takes date as a “string” and two **optional parameters**, the type of response as "responseType"(responseType="string" by default) and date format as "dateFormat" (dateFormat=null by default, see more details below) and returns a convenient response based on the user’s choice. It also validates leap years.
 
 ## Install
 
@@ -12,34 +12,53 @@ npm install validate-date --save--dev
 
 ## Usage
 
-The function accepts three parameters: a **date string**, a **"responseType"** parameter and a **"dateFormat"** string. By default "responseType"="string" and the function returns strings with information about the date string (see below). If "responseType" is set to "boolean", the function returns "true" for validated dates and "false" for incorrect ones. By default this function accepts dates on the formats "yyyy-mm-dd" and "mm/dd/yyyy", but other formats can be enforced by declaring it in the "dateFormat" parameter. The "dateFormat" parameter is case insensitive (e.g. YYYY/MM/DD is the same as yyyy/mm/dd). The only two separators accepted by now are "-" and "/". Only number can be used on the date (i.e. use 06 for June, not Jun or June).
+The function accepts 3 parameters: **date**, **responseType** and **dateFormat** strings. 
+1) **date** => string representation of date
+
+2) **responseType** => "string" or "boolean"
+    responseType="string" by default. The function returns "true" for validated dates and "false" for incorrect ones.
+
+    | date          | string            | boolean   |
+    | ------------- |:-----------------:|:----------|
+    |  02/02/2001   | Valid Date        |  true     |
+    |  99/10/2020   | Invalid Date      |  false    |
+    |  02022000     | Invalid Format    |  false    |
+
+3) **dateFormat** => format of the date supplied
+    By default this function accepts dates in the formats **"yyyy-mm-dd" and "mm/dd/yyyy"**, but other formats can be enforced by passing it as "dateFormat" parameter. The "dateFormat" parameter is **case insensitive** (e.g. YYYY/MM/DD is the same as yyyy/mm/dd). The only two separators accepted by now are "-" and "/". Only numbers are supposed on the date (i.e. use 06 for June, not Jun or June).
 
 ```js
 
 var validateDate = require("validate-date");
 
 
+validateDate('02/02/2001'); // returns "Valid Date"
+validateDate('99/10/2020'); // returns "Invalid Date"
+validateDate('02/29/2001'); // returns "Invalid Date", as Leap year check is verified
+validateDate('02022000'); // returns "Invalid Format"
+validateDate(''); // returns "Invalid Format"
 
+validateDate('99/10/2020', responseType="boolean"); // returns false
+validateDate('02/29/2001', responseType="boolean"); //returns false. Leap year check verified
+validateDate('02022000', responseType="boolean"); // returns false
+validateDate('', responseType="boolean"); // returns false
+validateDate('02/02/2001', responseType="boolean"); // returns true
 
-validateDate('99/10/2020'); //returns Invalid Date
-validateDate('02/29/2001'); //returns Invalid Date. Leap year check verified
-validateDate('02022000'); // returns Invalid Format
-validateDate(''); // returns Invalid Format
-validateDate('02/02/2001'); //returns Valid Date
+// The "responseType" param is "string" by default.
+validateDate('99/10/2020'); // returns "Invalid Date"
+validateDate('99/10/2020', responseType="string"); // returns "Invalid Date"
+validateDate('99/10/2020', responseType="boolean"); // returns false
 
-validateDate('99/10/2020’, booleanResponse=true); // returns false
-validateDate('02/29/2001’, booleanResponse=true); //returns false. Leap year check verified
-validateDate('02022000’, booleanResponse=true); // returns false
-validateDate(‘’, booleanResponse=true); // returns false
-validateDate('02/02/2001', booleanResponse=true); //returns true
+// The "dateFormat" param is "mm/dd/yyyy" by default.
+validateDate('02/27/2001', responseType="boolean"); // returns true
+validateDate('02/27/2001', responseType="boolean", dateFormat="mm/dd/yyyy"); // returns true
+validateDate('27/02/2001', responseType="boolean", dateFormat="dd/mm/yyyy"); // returns true
 
-The booleanResponse param is false by default.
-validateDate('99/10/2020’, booleanResponse=false); //returns Invalid Date
-validateDate('99/10/2020’, booleanResponse=true); //returns false
+validateDate('02/27/2001', responseType="string", dateFormat="mm/dd/yyyy"); // returns "Valid Date"
+validateDate('27/02/2001', responseType="string", dateFormat="dd/mm/yyyy"); // returns "Valid Date"
 
 
 ```
-
 ## License
 
 [MIT][license]
