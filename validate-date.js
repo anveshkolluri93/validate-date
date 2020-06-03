@@ -1,36 +1,84 @@
-function validateDate(dateValue, boolean = false) {
-  let responses = boolean
-    ? [false, false, false, true]
-    : ["Invalid Format", "Invalid Date", "Invalid Format", "Valid Date"];
+function validateDate(dateValue, responseType = "string", dateFormat = null) {
+  let responses = responseSetter(responseType)
   if (dateValue == null) {
     return responses[0];
   }
-  return dateValidator(dateValue, responses);
+  return dateValidator(dateValue, responses, dateFormat);
+}
+
+function responseSetter(responseType) {
+  switch (responseType) {
+    case "string":
+      return ["Invalid Format", "Invalid Date", "Valid Date"];
+    case "boolean":
+      return [false, false, true];
+    default:
+      return ["Invalid Format", "Invalid Date", "Valid Date"];
+
+  }
 }
 
 function daysInMonth(year, month) {
   const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  return month === 2 && year % 4 === 0 ? 29 : days[month - 1];
+  return (month === 2 && year % 4 === 0) ? 29 : days[month - 1];
 }
 
-function dateValidator(dateValue, responses) {
+function getAllIndexes(arr, val) {
+  var indexes = [],
+    i;
+  for (i = 0; i < arr.length; i++) if (arr[i] === val) indexes.push(i);
+  return indexes;
+}
+
+function dateValidator(dateValue, responses, dateFormat) {
   if (dateValue) {
-    const dateFormat = dateValue.includes("-")
-      ? /(\d{4})(-)(\d{2})(-)\d{2}.*/
-      : /(\d{2})(\/)(\d{2})(\/)\d{4}$/;
-    if (dateFormat.test(dateValue)) {
-      const dateSplit = dateValue.includes("-")
-        ? dateValue.split("-")
-        : dateValue.split("/");
-      const day = dateValue.includes("-")
-        ? parseInt(dateSplit[2].substring(0, 2), 10)
-        : parseInt(dateSplit[1], 10);
-      const month = dateValue.includes("-")
-        ? parseInt(dateSplit[1], 10)
-        : parseInt(dateSplit[0], 10);
-      const year = dateValue.includes("-")
-        ? parseInt(dateSplit[0], 10)
-        : parseInt(dateSplit[2], 10);
+    if (!dateFormat) {
+      dateFormat = dateValue.includes("-") ? "yyyy-mm-dd" : "mm/dd/yyyy";
+    }
+
+    if (dateFormat.length > 10 || dateFormat.length < 6) return responses[0];
+
+    const formatSplit = dateValue.includes("-")
+      ? dateFormat.split("-")
+      : dateFormat.split("/");
+
+    let wrongFormat = formatSplit
+      .map((formatPart) => /([dmy])\1/i.test(formatPart))
+      .filter((rightFormat) => !rightFormat);
+
+    if (wrongFormat.length > 0) return responses[0];
+
+    let dateSeparator = dateValue.includes("-") ? "-" : "/";
+
+    let formatRegex = new RegExp(
+      `(\\d{${formatSplit[0].length}})(${dateSeparator})(\\d{${formatSplit[1].length}})(${dateSeparator})(\\d{${formatSplit[2].length}})`
+    );
+
+    let dayPosition = getAllIndexes(
+      formatSplit,
+      formatSplit.filter((formatPart) => /[d]/i.test(formatPart))[0]
+    );
+    let monthPosition = getAllIndexes(
+      formatSplit,
+      formatSplit.filter((formatPart) => /[m]/i.test(formatPart))[0]
+    );
+    let yearPosition = getAllIndexes(
+      formatSplit,
+      formatSplit.filter((formatPart) => /[y]/i.test(formatPart))[0]
+    );
+
+    if (
+      dayPosition.length !== 1 ||
+      monthPosition.length !== 1 ||
+      yearPosition.length !== 1
+    )
+      return responses[0];
+
+    if (formatRegex.test(dateValue)) {
+      const dateSplit = dateValue.split(dateSeparator);
+      const day = Number(dateSplit[dayPosition]);
+      const month = Number(dateSplit[monthPosition]);
+      const year = Number(dateSplit[yearPosition]);
       if (
         month <= 0 ||
         month > 12 ||
@@ -41,10 +89,10 @@ function dateValidator(dateValue, responses) {
         return responses[1];
       }
     } else {
-      return responses[2];
+      return responses[0];
     }
   }
-  return responses[3];
+  return responses[2];
 }
 
 module.exports = validateDate;
