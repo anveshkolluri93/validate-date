@@ -42,6 +42,12 @@ function dateValidator(dateValue, responses, dateFormat) {
         dateFormat = dateValue.includes("-") ? "yyyy-mm-dd" : "mm/dd/yyyy";
         }
 
+        // Check if date separator is different from the dateFormat
+        if(dateFormat.includes("-") && !dateValue.includes("-"))
+          return responses[0];
+        if(dateFormat.includes("/") && !dateValue.includes("/"))
+          return responses[0];
+
         if (dateFormat.length > 10 || dateFormat.length < 6) return responses[0];
 
         const formatSplit = dateValue.includes("-")
