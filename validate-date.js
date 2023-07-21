@@ -1,4 +1,21 @@
 function validateDate(dateValue, responseType = "string", dateFormat = null) {
+    // Validate input parameters
+    if (typeof dateValue !== "string") {
+      throw new Error("dateValue must be a string.");
+    }
+  
+    if (typeof responseType !== "string" || !["string", "boolean"].includes(responseType)) {
+      throw new Error("responseType must be 'string' or 'boolean'.");
+    }
+  
+    if (dateFormat !== null && typeof dateFormat !== "string") {
+      throw new Error("dateFormat must be a string.");
+    }
+  
+    if (dateValue.trim() === "") {
+      return responseType === "string" ? "Invalid Format" : false;
+    }
+
   let responses = responseSetter(responseType)
   if (dateValue == null) {
     return responses[0];
