@@ -60,6 +60,12 @@ function dateValidator(dateValue, responses, dateFormat) {
       dateFormat = dateValue.includes("-") ? "yyyy-mm-dd" : "mm/dd/yyyy";
     }
 
+    const dateSeparator = /[^dmy]/i.exec(dateFormat)[0]; // Extract the separator character
+
+    if (!dateValue.includes(dateSeparator)) {
+      return responses[0];
+    }
+
     if (dateFormat.length > 10 || dateFormat.length < 6) return responses[0];
 
     const formatSplit = dateValue.includes("-") ? dateFormat.split("-") : dateFormat.split("/");
@@ -69,7 +75,7 @@ function dateValidator(dateValue, responses, dateFormat) {
 
     if (wrongFormat.length > 0) return responses[0];
 
-    let dateSeparator = dateValue.includes("-") ? "-" : "/";
+    // let dateSeparator = dateValue.includes("-") ? "-" : "/";
 
     let formatRegex = new RegExp(
       `(\\d{${formatSplit[0].length}})(${dateSeparator})(\\d{${formatSplit[1].length}})(${dateSeparator})(\\d{${formatSplit[2].length}})`
