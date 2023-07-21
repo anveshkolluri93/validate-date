@@ -17,9 +17,11 @@ describe('validateDate function', () => {
         expect(validateDate('2023-07-32')).toBe('Invalid Date');
         expect(validateDate('2023-13-01')).toBe('Invalid Date');
         expect(validateDate('02/29/2001')).toBe('Invalid Date');
-        //  TODO- Fix the regex to handle this case.
-        // expect(validateDate('2023/02/29')).toBe('Invalid Date');
         expect(validateDate('1752-09-02')).toBe('Invalid Date');
+
+        // Non leap year, 29 february
+        expect(validateDate('2023-02-29', 'string', 'yyyy-mm-dd')).toBe('Invalid Date');
+        expect(validateDate('2099-02-29', 'string', 'yyyy-mm-dd')).toBe('Invalid Date');
     });
 
     // Test invalid date values that should throw exceptions
@@ -32,6 +34,8 @@ describe('validateDate function', () => {
 
         // Testing with an object as dateValue
         expect(() => validateDate({ key: 'value' }, 'string')).toThrow('dateValue must be a string.');
+
+        expect(() => validateDate('2099-02-29', 'string', 'yyyy/mm/dd').toThrow('Use a valid separator. - or /.'));
     });
 
     it('should handle invalid dates with boolean response type', () => {
@@ -44,6 +48,7 @@ describe('validateDate function', () => {
     // Test invalid response types
     it('should throw an error for an invalid response type', () => {
         expect(() => validateDate('2023-07-20', 'number')).toThrow("responseType must be 'string' or 'boolean'.");
+        expect(() => validateDate(null, 'number')).toThrow("dateValue must be a string.");
     });
 
     // testing with different date formats
@@ -57,9 +62,11 @@ describe('validateDate function', () => {
     // testing with invalid date formats
     it('should handle invalid date formats', () => {
         expect(validateDate('2023-07-20', 'string', 'dd-MM-yyyy')).toBe('Invalid Format');
-        //  TODO- Fix the regex to handle this case.
-        // expect(validateDate('07/20/2023', 'string', 'yy/mm/dd')).toBe('Invalid Format');
-        // expect(validateDate('2023/20/07', 'string', 'yyyy-mm-dd')).toBe('Invalid Format');
-        // expect(validateDate('20-07-2023', 'string', 'dd/mm/yy')).toBe('Invalid Format');
+        expect(validateDate('2023-20-07', 'string', 'yyyy/dd/mm')).toBe('Invalid Format');
+        expect(validateDate('2023/20/07', 'string', 'yyyy-mm-dd')).toBe('Invalid Format');
+        expect(validateDate('20-07-2023', 'string', 'dd/mm/yy')).toBe('Invalid Format');
+
+        // Format mismatch leading to invalid date.
+        expect(validateDate('07/20/2023', 'string', 'yy/mm/dd')).toBe('Invalid Date');
     });
 });
