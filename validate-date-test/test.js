@@ -17,9 +17,11 @@ describe('validateDate function', () => {
         expect(validateDate('2023-07-32')).toBe('Invalid Date');
         expect(validateDate('2023-13-01')).toBe('Invalid Date');
         expect(validateDate('02/29/2001')).toBe('Invalid Date');
-        //  TODO- Fix the regex to handle this case.
-        // expect(validateDate('2023/02/29')).toBe('Invalid Date');
         expect(validateDate('1752-09-02')).toBe('Invalid Date');
+
+        // Non leap year, 29 february
+        expect(validateDate('2023-02-29', 'string', 'yyyy-mm-dd')).toBe('Invalid Date');
+        expect(validateDate('2099-02-29', 'string', 'yyyy-mm-dd')).toBe('Invalid Date');
     });
 
     // Test invalid date values that should throw exceptions
@@ -44,6 +46,7 @@ describe('validateDate function', () => {
     // Test invalid response types
     it('should throw an error for an invalid response type', () => {
         expect(() => validateDate('2023-07-20', 'number')).toThrow("responseType must be 'string' or 'boolean'.");
+        expect(() => validateDate(null, 'number')).toThrow("dateValue must be a string.");
     });
 
     // testing with different date formats
