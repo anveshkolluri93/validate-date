@@ -36,12 +36,12 @@ validateDate('02/02/2001'); // returns "Valid Date"
 validateDate('99/10/2020'); // returns "Invalid Date"
 validateDate('02/29/2001'); // returns "Invalid Date", as Leap year check is verified
 validateDate('02022000'); // returns "Invalid Format"
-validateDate(''); // returns "Invalid Format"
+validateDate(''); // throws an exception: "dateValue must be a string."
 
 validateDate('99/10/2020', responseType="boolean"); // returns false
 validateDate('02/29/2001', responseType="boolean"); //returns false. Leap year check verified
 validateDate('02022000', responseType="boolean"); // returns false
-validateDate('', responseType="boolean"); // returns false
+validateDate('', responseType="boolean"); // throws an exception: "dateValue must be a string."
 validateDate('02/02/2001', responseType="boolean"); // returns true
 
 // The "responseType" param is "string" by default.

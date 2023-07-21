@@ -16,6 +16,7 @@ describe('validateDate function', () => {
     it('should handle invalid dates with string response type', () => {
         expect(validateDate('2023-07-32')).toBe('Invalid Date');
         expect(validateDate('2023-13-01')).toBe('Invalid Date');
+        expect(validateDate('02/29/2001')).toBe('Invalid Date');
         //  TODO- Fix the regex to handle this case.
         // expect(validateDate('2023/02/29')).toBe('Invalid Date');
         expect(validateDate('1752-09-02')).toBe('Invalid Date');
